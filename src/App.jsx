@@ -52,7 +52,7 @@ function App() {
 
   return (
     <div
-      className="h-screen w-screen bg-cover bg-center bg-no-repeat bg-fixed text-white overflow-hidden relative"
+      className="min-h-screen w-full bg-cover bg-center bg-no-repeat bg-fixed text-white overflow-y-auto lg:h-screen lg:overflow-hidden relative"
       style={{
         backgroundImage: `url(${bgImage})`
       }}
@@ -60,19 +60,16 @@ function App() {
       {/* Dark Overlay for contrast - Lighter than before */}
       <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
 
-      {/* Main Grid Container - 2x2 Layout */}
-      {/* Cols: 2.2fr (Left) 1fr (Right) -> ~70% / 30% */}
-      {/* Rows: 5.5fr (Top) 4.5fr (Bottom) -> Matched Heights for Bottom Row Elements? 
-          User asked for "Detail Forecast Info and Weekly Info windows height matched".
-          So Row 2 elements should fill height.
-      */}
-      <main className="relative z-10 w-full h-full max-w-[1920px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-[2.2fr_1fr] grid-rows-[5.5fr_4.5fr] gap-6">
+      {/* Main Grid Container - Stack vertically on mobile, Grid on Desktop */}
+      {/* Mobile: Flex Col, Desktop: 2x2 Grid */}
+      <main className="relative z-10 w-full lg:h-full max-w-[1920px] mx-auto p-4 lg:p-6 flex flex-col gap-6 lg:grid lg:grid-cols-[2.2fr_1fr] lg:grid-rows-[5.5fr_4.5fr]">
 
         {/* === Top Left: Map === */}
-        <div className="glass-panel p-4 relative flex flex-col overflow-hidden">
+        {/* Mobile: Fixed Height for Map, Desktop: Auto Fill */}
+        <div className="glass-panel p-4 relative flex flex-col overflow-hidden h-[50vh] min-h-[400px] lg:h-auto lg:min-h-0">
           {/* Header inside Map Area - Aligned with other panels (p-6 = 24px) */}
           <div className="absolute top-6 left-6 right-6 z-[400] flex justify-between items-start pointer-events-none">
-            <div className="pointer-events-auto min-w-[280px]"> {/* Increased Width */}
+            <div className="pointer-events-auto min-w-[200px] w-full max-w-[280px]"> {/* Responsive Width */}
               <MountainSelector
                 selectedMountain={selectedMountain}
                 onSelectMountain={setSelectedMountain}
@@ -90,7 +87,7 @@ function App() {
         </div>
 
         {/* === Top Right: Merged Weather Info === */}
-        <div className="min-h-0">
+        <div className="min-h-0 w-full">
           <CurrentWeatherPanel
             weather={weather}
             daily={daily}
@@ -99,13 +96,14 @@ function App() {
         </div>
 
         {/* === Bottom Left: Forecast Graph === */}
-        <div className="glass-panel p-2 lg:p-4 overflow-hidden flex flex-col min-h-0 relative">
+        {/* Mobile: Fixed Height for Graph, Desktop: Auto Fill */}
+        <div className="glass-panel p-2 lg:p-4 overflow-hidden flex flex-col relative h-[300px] lg:h-auto lg:min-h-0 w-full">
           {/* Graph Title styled nicely for glass */}
           <ForecastGraph hourly={hourly} daily={daily} />
         </div>
 
         {/* === Bottom Right: Weekly Forecast === */}
-        <div className="min-h-0">
+        <div className="min-h-0 w-full">
           <WeeklyForecast daily={daily} />
         </div>
 

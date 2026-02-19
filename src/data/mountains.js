@@ -130,19 +130,19 @@ export const mountains = [
     { id: 1011, name: '고려산+', lat: 37.7530, lng: 126.4350, height: '436m', location: '인천 강화', type: 'plus' },
     { id: 1012, name: '계양산+', lat: 37.5539, lng: 126.7153, height: '395m', location: '인천 계양', type: 'plus' },
     { id: 1013, name: '문학산+', lat: 37.4278, lng: 126.6667, height: '217m', location: '인천 연수', type: 'plus' },
-    { id: 1014, name: '소요산+', lat: 37.9425, lng: 127.0872, height: '587m', location: '경기 동두천', type: 'plus' },
-    { id: 1015, name: '천마산+', lat: 37.6780, lng: 127.2760, height: '812m', location: '경기 남양주', type: 'plus' },
+    // Removed duplicate Soyosan (id 1014) - exists as id 55
+    // Removed duplicate Cheonmasan (id 1015) - exists as id 82
     { id: 1016, name: '심학산+', lat: 37.7120, lng: 126.7000, height: '194m', location: '경기 파주', type: 'plus' },
-    { id: 1017, name: '감악산(파주)+', lat: 37.9416, lng: 126.9697, height: '675m', location: '경기 파주', type: 'plus' },
+    // Removed duplicate Gamaksan (Paju) (id 1017) - exists as id 5
     { id: 1018, name: '고대산+', lat: 38.2058, lng: 127.1367, height: '832m', location: '경기 연천', type: 'plus' },
     { id: 1019, name: '국망봉+', lat: 38.0075, lng: 127.4283, height: '1168m', location: '경기 포천', type: 'plus' },
-    { id: 1020, name: '명성산+', lat: 38.1092, lng: 127.3467, height: '923m', location: '경기 포천', type: 'plus' },
-    { id: 1021, name: '명지산+', lat: 37.9381, lng: 127.4292, height: '1267m', location: '경기 가평', type: 'plus' },
-    { id: 1022, name: '연인산+', lat: 37.9155, lng: 127.4322, height: '1068m', location: '경기 가평', type: 'plus' },
-    { id: 1023, name: '운악산+', lat: 37.8744, lng: 127.3283, height: '937m', location: '경기 가평', type: 'plus' },
-    { id: 1024, name: '용문산+', lat: 37.5647, lng: 127.5455, height: '1157m', location: '경기 양평', type: 'plus' },
+    // Removed duplicate Myeongseongsan (id 1020) - exists as id 34
+    // Removed duplicate Myeongjisan (id 1021) - exists as id 35
+    // Removed duplicate Yeoninsan (id 1022) - exists as id 58
+    // Removed duplicate Unaksan (id 1023) - exists as id 64
+    // Removed duplicate Yongmunsan (id 1024) - exists as id 61
     { id: 1025, name: '주금산+', lat: 37.7733, lng: 127.2833, height: '814m', location: '경기 포천', type: 'plus' },
-    { id: 1026, name: '축령산+', lat: 37.7497, lng: 127.2942, height: '886m', location: '경기 남양주', type: 'plus' },
+    // Removed duplicate Chukryeongsan (id 1026) - exists as id 88
 
     // 강원 (Gangwon)
     { id: 1027, name: '검봉산+', lat: 37.8063, lng: 127.6047, height: '530m', location: '강원 춘천', type: 'plus' },
@@ -150,29 +150,29 @@ export const mountains = [
     { id: 1029, name: '금학산+', lat: 38.2083, lng: 127.2458, height: '947m', location: '강원 철원', type: 'plus' },
     { id: 1030, name: '사명산+', lat: 38.0760, lng: 127.9300, height: '1198m', location: '강원 양구', type: 'plus' },
     { id: 1031, name: '오봉산(춘천)+', lat: 37.9900, lng: 127.8055, height: '779m', location: '강원 춘천', type: 'plus' },
-    { id: 1032, name: '가리산+', lat: 37.8718, lng: 127.9547, height: '1051m', location: '강원 홍천', type: 'plus' },
-    { id: 1033, name: '계방산+', lat: 37.7288, lng: 128.4636, height: '1577m', location: '강원 평창', type: 'plus' },
+    // Removed duplicate Garisan (id 1032) - exists as id 1
+    // Removed duplicate Gyebangsan (id 1033) - exists as id 9
     { id: 1034, name: '귀때기청봉+', lat: 38.1130, lng: 128.4350, height: '1578m', location: '강원 인제', type: 'plus' },
     { id: 1035, name: '민둥산+', lat: 37.2736, lng: 128.7750, height: '1118m', location: '강원 정선', type: 'plus' },
-    { id: 1036, name: '백덕산+', lat: 37.3872, lng: 128.3269, height: '1350m', location: '강원 영월', type: 'plus' },
-    { id: 1037, name: '백운산(정선)+', lat: 37.2661, lng: 128.6181, height: '883m', location: '강원 정선', type: 'plus' },
-    { id: 1038, name: '태화산(영월)+', lat: 37.2831, lng: 128.4831, height: '1027m', location: '강원 영월', type: 'plus' },
-    { id: 1039, name: '팔봉산(홍천)+', lat: 37.6975, lng: 127.7656, height: '327m', location: '강원 홍천', type: 'plus' },
-    { id: 1040, name: '함백산+', lat: 37.1617, lng: 128.9175, height: '1573m', location: '강원 태백', type: 'plus' },
+    // Removed duplicate Baekdeoksan (id 1036) - exists as id 41
+    // Removed duplicate Baekunsan (Jeongseon) (id 1037) - exists as id 44
+    // Removed duplicate Taehwasan (Yeongwol) (id 1038) - exists as id 92
+    // Removed duplicate Palbongsan (Hongcheon) (id 1039) - exists as id 94
+    // Removed duplicate Hambaeksan (id 1040) - exists as id 95
 
     // 충청 (Chungcheong)
     { id: 1041, name: '갈기산+', lat: 36.1086, lng: 127.7011, height: '585m', location: '충북 영동', type: 'plus' },
     { id: 1042, name: '계족산+', lat: 36.3880, lng: 127.4360, height: '423m', location: '대전 대덕', type: 'plus' },
-    { id: 1043, name: '고덕산+', lat: 35.7500, lng: 127.1500, height: '603m', location: '전북 완주', type: 'plus' }, // Actually borderline Jeonbuk/Chungcheong in lists sometimes, but strictly Jeonbuk
+    { id: 1043, name: '고덕산+', lat: 35.7500, lng: 127.1500, height: '603m', location: '전북 완주', type: 'plus' },
     { id: 1044, name: '도명산+', lat: 36.6500, lng: 127.8100, height: '650m', location: '충북 괴산', type: 'plus' },
     { id: 1045, name: '낙영산+', lat: 36.6500, lng: 127.8800, height: '684m', location: '충북 괴산', type: 'plus' },
     { id: 1046, name: '서대산+', lat: 36.2230, lng: 127.5450, height: '904m', location: '충남 금산', type: 'plus' },
     { id: 1047, name: '성주산+', lat: 36.3167, lng: 126.6500, height: '680m', location: '충남 보령', type: 'plus' },
     { id: 1048, name: '오서산+', lat: 36.4678, lng: 126.6667, height: '791m', location: '충남 보령', type: 'plus' },
-    { id: 1049, name: '조령산+', lat: 36.7827, lng: 128.0500, height: '1017m', location: '충북 괴산', type: 'plus' },
+    // Removed duplicate Joryeongsan (id 1049) - exists as id 75
     { id: 1050, name: '좌구산+', lat: 36.7333, lng: 127.6000, height: '657m', location: '충북 증평', type: 'plus' },
     { id: 1051, name: '진악산+', lat: 36.0667, lng: 127.4833, height: '732m', location: '충남 금산', type: 'plus' },
-    { id: 1052, name: '칠보산+', lat: 36.7263, lng: 127.9347, height: '778m', location: '충북 괴산', type: 'plus' },
+    // Removed duplicate Chilbosan (id 1052) - exists as id 84
     { id: 1053, name: '천태산+', lat: 36.1950, lng: 127.6530, height: '714m', location: '충북 영동', type: 'plus' },
     { id: 1054, name: '향적산+', lat: 36.2930, lng: 127.2020, height: '574m', location: '충남 계룡', type: 'plus' },
     { id: 1055, name: '장령산+', lat: 36.2449, lng: 127.5547, height: '656m', location: '충북 옥천', type: 'plus' },
@@ -184,14 +184,14 @@ export const mountains = [
 
     // 경상 (Gyeongsang)
     { id: 1061, name: '갑장산+', lat: 36.3333, lng: 128.1667, height: '806m', location: '경북 상주', type: 'plus' },
-    { id: 1062, name: '금오산+', lat: 36.1039, lng: 128.3142, height: '976m', location: '경북 구미', type: 'plus' },
+    // Removed duplicate Geumosan (id 1062) - exists as id 18
     { id: 1063, name: '남산제일봉+', lat: 35.7660, lng: 128.1000, height: '1010m', location: '경남 합천', type: 'plus' },
     { id: 1064, name: '무학산+', lat: 35.2111, lng: 128.5358, height: '761m', location: '경남 창원', type: 'plus' },
     { id: 1065, name: '미륵산+', lat: 34.8160, lng: 128.4000, height: '461m', location: '경남 통영', type: 'plus' },
     { id: 1066, name: '보현산+', lat: 36.1667, lng: 128.9500, height: '1124m', location: '경북 영천', type: 'plus' },
-    { id: 1067, name: '비슬산+', lat: 35.7175, lng: 128.5322, height: '1083m', location: '대구 달성', type: 'plus' },
+    // Removed duplicate Biseulsan (id 1067) - exists as id 48
     { id: 1068, name: '사량도지리산+', lat: 34.8450, lng: 128.2300, height: '398m', location: '경남 통영', type: 'plus' },
-    { id: 1070, name: '신불산+', lat: 35.5394, lng: 129.0567, height: '1159m', location: '울산/경남', type: 'plus' },
+    // Removed duplicate Sinbulsan (id 1070) - exists as id 57
     { id: 1071, name: '연화산(고성)+', lat: 35.0350, lng: 128.3240, height: '528m', location: '경남 고성', type: 'plus' },
     { id: 1072, name: '운제산+', lat: 35.9102, lng: 129.3276, height: '482m', location: '경북 포항', type: 'plus' },
     { id: 1073, name: '웅석봉+', lat: 35.3400, lng: 127.8700, height: '1099m', location: '경남 산청', type: 'plus' },
@@ -202,7 +202,7 @@ export const mountains = [
     { id: 1078, name: '학가산+', lat: 36.6500, lng: 128.6000, height: '870m', location: '경북 안동', type: 'plus' },
     { id: 1079, name: '거류산+', lat: 35.4050, lng: 128.2800, height: '571m', location: '경남 고성', type: 'plus' },
     { id: 1080, name: '계룡산(거제)+', lat: 34.8870, lng: 128.6250, height: '570m', location: '경남 거제', type: 'plus' },
-    { id: 1081, name: '금정산+', lat: 35.2869, lng: 129.0556, height: '801m', location: '부산 금정', type: 'plus' },
+    // Removed duplicate Geumjeongsan (id 1081) - exists as id 17
     { id: 1082, name: '기백산+', lat: 35.7360, lng: 127.7660, height: '1332m', location: '경남 함양', type: 'plus' },
     { id: 1083, name: '굴암산+', lat: 35.1580, lng: 128.8080, height: '662m', location: '경남 김해', type: 'plus' },
     { id: 1084, name: '대금산(거제)+', lat: 34.9583, lng: 128.6583, height: '437m', location: '경남 거제', type: 'plus' },
@@ -210,7 +210,7 @@ export const mountains = [
     { id: 1086, name: '승학산+', lat: 35.1167, lng: 128.9797, height: '497m', location: '부산 사하', type: 'plus' },
     { id: 1087, name: '앞산+', lat: 35.8290, lng: 128.5830, height: '658m', location: '대구 남구', type: 'plus' },
     { id: 1088, name: '천생산+', lat: 36.0825, lng: 128.4681, height: '407m', location: '경북 구미', type: 'plus' },
-    { id: 1089, name: '황석산+', lat: 35.6669, lng: 127.7653, height: '1192m', location: '경남 함양', type: 'plus' },
+    // Removed duplicate Hwangseoksan (id 1089) - exists as id 101
 
     // 전라 (Jeolla)
     { id: 1090, name: '고리봉+', lat: 35.3948, lng: 127.3061, height: '709m', location: '전북 남원', type: 'plus' },
@@ -222,19 +222,19 @@ export const mountains = [
     { id: 1096, name: '불갑산+', lat: 35.1907, lng: 126.5642, height: '518m', location: '전남 영광', type: 'plus' },
     { id: 1097, name: '상황봉+', lat: 34.3483, lng: 126.6930, height: '644m', location: '전남 완도', type: 'plus' },
     { id: 1098, name: '흑석산+', lat: 34.6760, lng: 126.6331, height: '650m', location: '전남 해남', type: 'plus' },
-    { id: 1099, name: '강천산+', lat: 35.4053, lng: 127.0583, height: '584m', location: '전북 순창', type: 'plus' },
-    { id: 1100, name: '고산+', lat: 35.6200, lng: 127.2000, height: '528m', location: '전북 완주', type: 'plus' }, // Approx
+    // Removed duplicate Gangcheonsan (id 1099) - exists as id 7
+    { id: 1100, name: '고산+', lat: 35.6200, lng: 127.2000, height: '528m', location: '전북 완주', type: 'plus' },
     { id: 1101, name: '기차산(장군봉)+', lat: 35.9189, lng: 127.2433, height: '738m', location: '전북 완주', type: 'plus' },
     { id: 1102, name: '달마산+', lat: 34.3833, lng: 126.5833, height: '470m', location: '전남 해남', type: 'plus' },
-    { id: 1103, name: '서대산+', lat: 36.2230, lng: 127.5450, height: '904m', location: '충남 금산', type: 'plus' }, // Duplicate check? (Kept as ref, but it's in Chungnam above. Replacing with Seonunsan)
-    { id: 1104, name: '선운산+', lat: 35.4975, lng: 126.5828, height: '336m', location: '전북 고창', type: 'plus' },
-    { id: 1105, name: '월출산+', lat: 34.7617, lng: 126.6975, height: '809m', location: '전남 영암', type: 'plus' },
-    { id: 1106, name: '적상산+', lat: 35.9406, lng: 127.7025, height: '1034m', location: '전북 무주', type: 'plus' },
-    { id: 1107, name: '운장산+', lat: 35.8986, lng: 127.4114, height: '1126m', location: '전북 진안', type: 'plus' },
+    // Removed duplicate Seodaesan (id 1103) - Duplicate of 1046
+    // Removed duplicate Seonunsan (id 1104) - exists as id 51
+    // Removed duplicate Wolchulsan (id 1105) - exists as id 68
+    // Removed duplicate Jeoksangsan (id 1106) - exists as id 73
+    // Removed duplicate Unjangsan (id 1107) - exists as id 66
 
     // 제주 (Jeju)
     { id: 1108, name: '거문오름+', lat: 33.4547, lng: 126.7192, height: '456m', location: '제주 조천', type: 'plus' },
-    { id: 1109, name: '한라산+', lat: 33.3617, lng: 126.5292, height: '1950m', location: '제주', type: 'plus' },
+    // Removed duplicate Hallasan (id 1109) - exists as id 96
 
     // Others / Missing Filler
     { id: 1110, name: '삼각산(광주)+', lat: 35.2000, lng: 126.9000, height: '418m', location: '광주 북구', type: 'plus' },
