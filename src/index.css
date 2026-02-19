@@ -10,9 +10,19 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        overflow: hidden;
-        /* Prevent global scroll */
+        /* Default: Allow scroll */
+        overflow-y: auto;
         font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    /* Desktop: Hidden scroll (App handles it if needed, or forced full screen) */
+    @media (min-width: 1024px) {
+
+        html,
+        body,
+        #root {
+            overflow: hidden;
+        }
     }
 }
 
