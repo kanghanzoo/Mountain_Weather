@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/Mountain_Weather/', // Base URL for GitHub Pages
   plugins: [react()],
   server: {
     host: true, // Allow external access (local network)

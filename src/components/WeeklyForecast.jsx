@@ -1,34 +1,67 @@
 import React from 'react';
 import { getWeatherIcon } from '../utils/weatherUtils';
+import { format, parseISO } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 const WeeklyForecast = ({ daily }) => {
     if (!daily) return null;
 
-    return (
-        <div className="w-full max-w-sm mx-auto mt-6 mb-10">
-            <h3 className="text-white text-lg font-bold mb-3 px-2">주간 예보</h3>
-            <div className="bg-white/20 backdrop-blur-md rounded-xl p-4 border border-white/30">
-                {daily.time.map((time, index) => {
-                    const date = new Date(time);
-                    const dayName = new Intl.DateTimeFormat('ko-KR', { weekday: 'short' }).format(date);
-                    const { icon, text } = getWeatherIcon(daily.weathercode[index]);
-                    const minTemp = Math.round(daily.temperature_2m_min[index]);
-                    const maxTemp = Math.round(daily.temperature_2m_max[index]);
+    const forecasts = daily.time.slice(1, 8).map((time, index) => {
+        const idx = index + 1;
+        const code = daily.weathercode[idx];
+        const maxTemp = Math.round(daily.temperature_2m_max[idx]);
+        const minTemp = Math.round(daily.temperature_2m_min[idx]);
+        const iconData = getWeatherIcon(code);
+        const date = parseISO(time);
 
-                    return (
-                        <div key={index} className="flex justify-between items-center py-3 border-b border-white/20 last:border-0 pl-2 pr-2">
-                            <span className="text-white font-semibold w-12">{dayName}</span>
-                            <div className="flex items-center flex-1 justify-center">
-                                <span className="text-2xl mr-2">{icon}</span>
-                                <span className="text-white text-sm opacity-90 hidden sm:block">{text}</span>
+        return {
+            date: date,
+            dayShort: format(date, 'E', { locale: ko }),
+            dateStr: format(date, 'M.d'),
+            icon: iconData.icon,
+            text: iconData.text,
+            max: maxTemp,
+            min: minTemp
+        };
+    });
+
+    return (
+        <div className="glass-panel w-full h-full p-6 flex flex-col overflow-hidden">
+            {/* Title standardized to text-xl */}
+            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2 drop-shadow-md shrink-0">
+                <span>📅</span> 주간 예보
+            </h3>
+
+            <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
+                <div className="flex flex-col gap-2">
+                    {forecasts.map((forecast, i) => (
+                        <div
+                            key={i}
+                            className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors group border border-white/5"
+                        >
+                            {/* 1. Date (Smaller Font) */}
+                            <div className="w-24 flex items-baseline gap-2">
+                                <span className="text-white font-bold text-lg">{forecast.dateStr}</span>
+                                <span className="text-gray-400 text-sm">{forecast.dayShort}</span>
                             </div>
-                            <div className="flex w-24 justify-end text-white">
-                                <span className="opacity-70 mr-2">{minTemp}°</span>
-                                <span className="font-bold">{maxTemp}°</span>
+
+                            {/* 2. Icon + Text (Left Aligned, Smaller Font) */}
+                            <div className="flex-1 flex items-center justify-start gap-3 pl-2">
+                                <div className="text-2xl">
+                                    {forecast.icon}
+                                </div>
+                                <span className="text-sm text-gray-200 font-medium">{forecast.text}</span>
+                            </div>
+
+                            {/* 3. Temps (Smaller Font) */}
+                            <div className="w-20 flex justify-end items-center gap-1.5">
+                                <span className="text-blue-300 font-medium text-base">{forecast.min}°</span>
+                                <span className="text-gray-600 text-xs">/</span>
+                                <span className="text-red-300 font-bold text-base">{forecast.max}°</span>
                             </div>
                         </div>
-                    );
-                })}
+                    ))}
+                </div>
             </div>
         </div>
     );

@@ -1,59 +1,76 @@
-import React, { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { mountains } from '../data/mountains';
 
-const MountainSelector = ({ selectedMountain, onSelectMountain }) => {
+const CustomMountainSelector = ({ selectedMountain, onSelectMountain }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const dropdownRef = useRef(null);
 
     const filteredMountains = mountains.filter(m =>
         m.name.includes(searchTerm) || m.location.includes(searchTerm)
     );
 
-    return (
-        <div className="relative w-full max-w-sm mx-auto mb-6 z-50">
-            <div
-                className="bg-white/30 backdrop-blur-md rounded-lg p-3 text-white cursor-pointer flex justify-between items-center shadow-md border border-white/40"
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                <span className="font-semibold text-lg">{selectedMountain.name}</span>
-                <span>{isOpen ? '▲' : '▼'}</span>
-            </div>
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
+    return (
+        // Removed padding to allow parent to control spacing
+        <div className="relative w-full pointer-events-auto" ref={dropdownRef}>
+            {/* Trigger Button */}
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between bg-[#1f1f1f]/95 backdrop-blur-md text-white border border-white/20 rounded-2xl px-5 py-3 shadow-2xl hover:bg-[#2a2a2a] transition-all ring-1 ring-white/10"
+            >
+                <div className="flex items-center gap-3">
+                    <span className="text-xl font-bold tracking-tight">⛰️ {selectedMountain.name}</span>
+                    <span className="text-sm text-gray-400 font-normal">({selectedMountain.location})</span>
+                </div>
+                <span className={`text-gray-400 text-lg transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+            </button>
+
+            {/* Dropdown Menu - Floating with margin */}
             {isOpen && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl max-h-80 overflow-y-auto text-gray-800 p-2">
-                    <input
-                        type="text"
-                        placeholder="산 이름 또는 지역 검색"
-                        className="w-full p-2 mb-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        onClick={(e) => e.stopPropagation()}
-                    />
-                    <ul>
-                        {filteredMountains.map(mountain => (
-                            <li
-                                key={mountain.id}
-                                className={`p-2 hover:bg-blue-100 cursor-pointer rounded-md ${selectedMountain.id === mountain.id ? 'bg-blue-50 font-bold text-blue-600' : ''}`}
+                <div className="absolute top-[calc(100%-8px)] left-4 right-4 max-h-[400px] bg-[#1a1a1a]/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl overflow-hidden flex flex-col z-[9999] mt-2 ring-1 ring-black/50">
+                    {/* Search */}
+                    <div className="p-3 border-b border-white/10 bg-white/5">
+                        <input
+                            type="text"
+                            placeholder="산 이름 검색..."
+                            className="w-full bg-black/30 text-white px-3 py-2.5 rounded-xl border border-white/10 focus:ring-2 focus:ring-white/30 placeholder-gray-500 text-base outline-none"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            autoFocus
+                        />
+                    </div>
+
+                    {/* List */}
+                    <div className="flex-1 overflow-y-auto custom-scrollbar">
+                        {filteredMountains.map(m => (
+                            <button
+                                key={m.id}
                                 onClick={() => {
-                                    onSelectMountain(mountain);
+                                    onSelectMountain(m);
                                     setIsOpen(false);
                                     setSearchTerm('');
                                 }}
+                                className={`w-full text-left px-5 py-3 hover:bg-white/10 transition-colors flex items-center gap-2 border-b border-white/5 last:border-0 ${selectedMountain.id === m.id ? 'bg-white/20' : ''}`}
                             >
-                                <div className="flex justify-between items-center">
-                                    <span>{mountain.name}</span>
-                                    <span className="text-xs text-gray-500">{mountain.location} | {mountain.height}</span>
-                                </div>
-                            </li>
+                                <span className="font-bold text-white text-base">{m.name}</span>
+                                <span className="text-gray-400 text-xs">({m.location})</span>
+                            </button>
                         ))}
-                        {filteredMountains.length === 0 && (
-                            <li className="p-2 text-center text-gray-500">검색 결과가 없습니다.</li>
-                        )}
-                    </ul>
+                    </div>
                 </div>
             )}
         </div>
     );
 };
 
-export default MountainSelector;
+export default CustomMountainSelector;

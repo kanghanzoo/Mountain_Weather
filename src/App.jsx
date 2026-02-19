@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import WeatherCard from './components/WeatherCard';
-import MountainSelector from './components/MountainSelector';
-import HourlyForecast from './components/HourlyForecast';
+import CurrentWeatherPanel from './components/CurrentWeatherPanel'; // Merged Component
 import WeeklyForecast from './components/WeeklyForecast';
+import MountainSelector from './components/MountainSelector';
+import ForecastGraph from './components/ForecastGraph';
 import MapComponent from './components/MapComponent';
 import { mountains } from './data/mountains';
 import { getRandomBackground } from './data/backgrounds';
@@ -15,7 +15,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [bgImage, setBgImage] = useState('');
 
-  // Set random background on mount
   useEffect(() => {
     setBgImage(getRandomBackground());
   }, []);
@@ -25,10 +24,20 @@ function App() {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${selectedMountain.lat}&longitude=${selectedMountain.lng}&current_weather=true&hourly=temperature_2m,weathercode,precipitation_probability&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+          `https://api.open-meteo.com/v1/forecast?latitude=${selectedMountain.lat}&longitude=${selectedMountain.lng}&current=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,rain,showers,snowfall,weathercode,cloudcover,windspeed_10m&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&timezone=auto`
         );
         const data = await response.json();
-        setWeather(data.current_weather);
+
+        const currentData = {
+          ...data.current,
+          temperature: data.current.temperature_2m,
+          windspeed: data.current.windspeed_10m,
+          weathercode: data.current.weathercode,
+          apparent_temperature: data.current.apparent_temperature,
+          precipitation: data.current.precipitation
+        };
+
+        setWeather(currentData);
         setHourly(data.hourly);
         setDaily(data.daily);
       } catch (error) {
@@ -43,49 +52,64 @@ function App() {
 
   return (
     <div
-      className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 flex flex-col items-center bg-cover bg-center bg-no-repeat bg-fixed transition-all duration-1000"
+      className="h-screen w-screen bg-cover bg-center bg-no-repeat bg-fixed text-white overflow-hidden relative"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url(${bgImage})`
+        backgroundImage: `url(${bgImage})`
       }}
     >
-      <header className="w-full max-w-6xl mx-auto mb-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center">
-        <h1 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-md mb-4 sm:mb-0">🏔️ 산 날씨 예보</h1>
-        <div className="w-full sm:w-80">
-          <MountainSelector
-            selectedMountain={selectedMountain}
-            onSelectMountain={setSelectedMountain}
-          />
-        </div>
-      </header>
+      {/* Dark Overlay for contrast - Lighter than before */}
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
 
-      {/* Rest of the component remains the same, but loading spinner needs to be white */}
-      {loading ? (
-        <div className="text-white text-xl mt-10 animate-pulse flex-1 flex items-center justify-center font-semibold drop-shadow-md">
-          날씨 정보를 불러오는 중입니다...
-        </div>
-      ) : (
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl mx-auto flex-1">
-          {/* Left Column: Weather Info */}
-          <div className="space-y-6 order-2 lg:order-1">
-            <WeatherCard weather={weather} mountainName={selectedMountain.name} />
-            {hourly && <HourlyForecast hourly={hourly} />}
-            {daily && <WeeklyForecast daily={daily} />}
+      {/* Main Grid Container - 2x2 Layout */}
+      {/* Cols: 2.2fr (Left) 1fr (Right) -> ~70% / 30% */}
+      {/* Rows: 5.5fr (Top) 4.5fr (Bottom) -> Matched Heights for Bottom Row Elements? 
+          User asked for "Detail Forecast Info and Weekly Info windows height matched".
+          So Row 2 elements should fill height.
+      */}
+      <main className="relative z-10 w-full h-full max-w-[1920px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-[2.2fr_1fr] grid-rows-[5.5fr_4.5fr] gap-6">
+
+        {/* === Top Left: Map === */}
+        <div className="glass-panel p-4 relative flex flex-col overflow-hidden">
+          {/* Header inside Map Area - Aligned with other panels (p-6 = 24px) */}
+          <div className="absolute top-6 left-6 right-6 z-[400] flex justify-between items-start pointer-events-none">
+            <div className="pointer-events-auto min-w-[280px]"> {/* Increased Width */}
+              <MountainSelector
+                selectedMountain={selectedMountain}
+                onSelectMountain={setSelectedMountain}
+              />
+            </div>
           </div>
 
-          {/* Right Column: Map */}
-          <div className="order-1 lg:order-2 h-[300px] sm:h-[400px] lg:h-auto min-h-[300px] lg:min-h-[500px] sticky top-6">
+          <div className="w-full h-full rounded-[16px] overflow-hidden relative z-0">
             <MapComponent
               selectedMountain={selectedMountain}
               mountains={mountains}
               onSelectMountain={setSelectedMountain}
             />
           </div>
-        </main>
-      )}
+        </div>
 
-      <footer className="mt-12 text-white/70 text-sm py-4 w-full text-center border-t border-white/20 backdrop-blur-sm">
-        Data provided by Open-Meteo & OpenStreetMap | Developed with Vite + React
-      </footer>
+        {/* === Top Right: Merged Weather Info === */}
+        <div className="min-h-0">
+          <CurrentWeatherPanel
+            weather={weather}
+            daily={daily}
+            mountainName={selectedMountain.name}
+          />
+        </div>
+
+        {/* === Bottom Left: Forecast Graph === */}
+        <div className="glass-panel p-2 lg:p-4 overflow-hidden flex flex-col min-h-0 relative">
+          {/* Graph Title styled nicely for glass */}
+          <ForecastGraph hourly={hourly} daily={daily} />
+        </div>
+
+        {/* === Bottom Right: Weekly Forecast === */}
+        <div className="min-h-0">
+          <WeeklyForecast daily={daily} />
+        </div>
+
+      </main>
     </div>
   );
 }

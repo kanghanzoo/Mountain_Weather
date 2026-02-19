@@ -1,91 +1,79 @@
-import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { useEffect } from 'react';
 
-// Fix for default marker icon in Leaflet with bundlers
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+// Custom icons
+const createMountainIcon = (type) => {
+    const isPlus = type === 'plus';
+    const emoji = isPlus ? '🏔️' : '⛰️'; // Snow capped for Plus, Standard for 100
 
-let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
+    // 명산 100 (Standard): Natural Green look (Default emoji colors are usually brownish/green)
+    // 명산 100+ (Plus): Icy Blue look
+    // Using filter to shift colors distinctively
+    const filterStyle = isPlus
+        ? 'filter: hue-rotate(180deg) brightness(1.2) drop-shadow(0 2px 3px rgba(0, 200, 255, 0.6));' // Blue tint & Azure glow
+        : 'filter: drop-shadow(0 2px 3px rgba(0, 100, 0, 0.5));'; // Greenish shadow
 
-L.Marker.prototype.options.icon = DefaultIcon;
+    return L.divIcon({
+        html: `<div style="font-size: 28px; line-height: 1; ${filterStyle} transition: transform 0.2s;">${emoji}</div>`,
+        className: 'custom-div-icon',
+        iconSize: [28, 28], // Slightly larger
+        iconAnchor: [14, 14],
+        popupAnchor: [0, -14]
+    });
+};
 
-// Helper component to update map view when selected mountain changes
-const ChangeView = ({ center, zoom }) => {
+const MapUpdater = ({ center }) => {
     const map = useMap();
     useEffect(() => {
-        map.flyTo(center, zoom, {
-            duration: 1.5
-        });
-    }, [center, zoom, map]);
+        if (center) {
+            map.flyTo(center, 11, {
+                animate: true,
+                duration: 1.5
+            });
+        }
+    }, [center, map]);
     return null;
 };
 
-const MapComponent = ({ selectedMountain, mountains, onSelectMountain }) => {
-    const position = [selectedMountain.lat, selectedMountain.lng];
-
+const MapComponent = ({ mountains, selectedMountain, onSelectMountain }) => {
     return (
-        <div className="h-full w-full rounded-xl overflow-hidden shadow-lg border border-white/30 relative z-0">
-            <MapContainer
-                center={position}
-                zoom={13}
-                scrollWheelZoom={true} // Enabled scroll zoom
-                style={{ height: '100%', width: '100%' }}
-            >
-                <ChangeView center={position} zoom={13} />
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+        <MapContainer
+            center={[36.5, 127.5]}
+            zoom={7}
+            className="w-full h-full"
+            zoomControl={false}
+        >
+            <TileLayer
+                url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            />
 
-                {/* Render markers for all mountains if list is provided */}
-                {mountains && mountains.map((mountain) => (
-                    <Marker
-                        key={mountain.id}
-                        position={[mountain.lat, mountain.lng]}
-                        eventHandlers={{
-                            click: () => onSelectMountain && onSelectMountain(mountain),
-                        }}
-                        opacity={selectedMountain.id === mountain.id ? 1 : 0.7} // Highlight selected
+            <MapUpdater center={selectedMountain ? [selectedMountain.lat, selectedMountain.lng] : null} />
+
+            {mountains.map(mountain => (
+                <Marker
+                    key={mountain.id}
+                    position={[mountain.lat, mountain.lng]}
+                    icon={createMountainIcon(mountain.type)}
+                    eventHandlers={{
+                        click: () => onSelectMountain(mountain),
+                    }}
+                >
+                    <Popup
+                        closeButton={false}
+                        className="custom-popup"
+                        autoPan={false}
                     >
-                        <Tooltip direction="top" offset={[0, -20]} opacity={1}>
-                            {mountain.name}
-                        </Tooltip>
-                        {selectedMountain.id === mountain.id && (
-                            <Popup>
-                                <div className="text-center">
-                                    <strong className="text-lg">{mountain.name}</strong><br />
-                                    {mountain.height}<br />
-                                    {mountain.location}
-                                </div>
-                            </Popup>
-                        )}
-                    </Marker>
-                ))}
-
-                {/* Fallback for single marker if mountains prop is missing (though it shouldn't be) */}
-                {!mountains && (
-                    <Marker position={position}>
-                        <Popup>
-                            <div className="text-center">
-                                <strong className="text-lg">{selectedMountain.name}</strong><br />
-                                {selectedMountain.height}<br />
-                                {selectedMountain.location}
-                            </div>
-                        </Popup>
-                    </Marker>
-                )}
-
-            </MapContainer>
-        </div>
+                        <div className="text-center">
+                            <div className="font-bold text-lg mb-1">{mountain.name}</div>
+                            <div className="text-gray-500 text-sm">{mountain.height} | {mountain.location}</div>
+                        </div>
+                    </Popup>
+                </Marker>
+            ))}
+        </MapContainer>
     );
 };
 
